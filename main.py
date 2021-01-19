@@ -1,5 +1,6 @@
 import re
 import time
+from datetime import datetime
 import schedule
 from speedtest import Speedtest
 
@@ -19,6 +20,7 @@ def RunTest():
     try:
         for desired_ssid, passwrd in GetNetworkData():
             ConnectTo(desired_ssid, passwrd)
+            test_time = datetime.now()
             try:
                 data = PerformSpeedtest()
             except Error as e:
@@ -27,7 +29,7 @@ def RunTest():
             ssid = re.sub(r'\W+', '', ssid_raw)
 
             results = {}
-            results["TIMESTAMP"]     = data["timestamp"]
+            results["TIMESTAMP"]     = test_time.strftime("%Y-%m-%d %H:%M:%S")
             results["WIFINAME"]      = ssid
             results["HOSTNAME"]      = data["server"]["host"]
             results["HOSTID"]        = data["server"]["id"]
@@ -35,7 +37,7 @@ def RunTest():
             results["UPLOADSPEED"]   = data["upload"]
             results["LATENCY"]       = data["ping"]
 
-            AddResultsToDataBaseTable(desired_ssid, results)
+            AddResultsToDataBaseTable(ssid, results)
             print(f"Test on {ssid} successful: DOWNLOADSPEED {results['DOWNLOADSPEED']/1024} KiB/s")
     except Exception as e:
         print("Unforeseen error caught:", e)
@@ -44,7 +46,6 @@ def ScheduleAllTests():
     schedule.every(30).minutes.do(RunTest)
     while True:
         schedule.run_pending()
-        time.sleep(10)
 
 if __name__ == '__main__':
     ScheduleAllTests()

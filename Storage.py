@@ -96,3 +96,7 @@ if __name__ == '__main__':
         print(row)
 
     DropTable("TestTable")
+
+    contents = GetTableContents("WiFi503077")
+    for row in contents:
+        print(row)
