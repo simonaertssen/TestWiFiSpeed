@@ -8,17 +8,17 @@ def GetNetworkData():
     network_names = []
     passwords = []
     for file_name in os.listdir("WiFi Network Data"):
+        print(file_name)
         if file_name == '.DS_Store':
             continue
         try:
             file_to_open = os.path.join(directory, file_name)
             with open(file_to_open, 'r') as filereader:
-                network_names.append(filereader.readline().strip())
+                network_names.append(file_name.strip())
                 passwords.append(filereader.readline().strip())
         except Error as e:
             print(f"Error opening {file_name}:", e)
-        finally:
-            return network_names, passwords
+    return network_names, passwords
 
 def GetActiveNetworkName():
     active_network_name = ""
@@ -36,8 +36,8 @@ def ConnectTo(ssid, passphrase):
     subprocess_result = subprocess.Popen(command_on,shell=True,stdout=subprocess.PIPE)
     command_conn = f"networksetup -setairportnetwork en0 {ssid} {passphrase}"
     subprocess_result = subprocess.Popen(command_conn,shell=True,stdout=subprocess.PIPE)
-    time.sleep(20)  # Wait for connection to be established:
-    print(f"Connected to {ssid}")
+    time.sleep(30)  # Wait for connection to be established:
+    print(f"Connected to {GetActiveNetworkName()}..")
 
 if __name__ == '__main__':
     for ssid, passwrd in GetNetworkData():
