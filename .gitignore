@@ -124,13 +124,10 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+WiFi Network Data/
 
 # Pyre type checker
 .pyre/
-
-# Don't upload password file:
-password.txt
-WiFi Network Data
 
 # Mac functionality:
 .DS_Store

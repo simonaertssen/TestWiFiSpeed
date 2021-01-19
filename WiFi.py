@@ -1,24 +1,27 @@
 import os
 
 def GetNetworkData():
-    files_to_open = os.listdir("path/to/directory")
-    with open("WiFi Network Data/password.txt", 'r') as filereader:
-def GetPassword():
-    with open("WiFi Network Data/password.txt", 'r') as filereader:
-        print(filereader.read())
+    directory = "WiFi Network Data"
+    network_names = []
+    passwords = []
+    for file_name in os.listdir("WiFi Network Data"):
+        file_to_open = os.path.join(directory, file_name)
+        with open(file_to_open, 'r') as filereader:
+            network_names.append(filereader.readline().strip())
+            passwords.append(filereader.readline().strip())
+    return network_names, passwords
 
 
-def GetActiveWiFiNetworkName():
+def GetActiveNetworkName():
     subprocess_result = subprocess.Popen("/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'",shell=True,stdout=subprocess.PIPE)
     subprocess_output = subprocess_result.communicate()[0],subprocess_result.returncode
     return subprocess_output[0].decode('utf-8')
 
-# def Connect()
-#
-#     command = """sudo iwlist wlp2s0 scan | grep -ioE 'ssid:"(.*{}.*)'"""
-#     result = os.popen(command.format(self.server_name))
-#     result = list(result)
+def Connect()
+    command = """sudo iwlist wlp2s0 scan | grep -ioE 'ssid:"(.*{}.*)'"""
+    result = os.popen(command.format(self.server_name))
+    result = list(result)
 
 
 if __name__ == '__main__':
-    GetPassword()
+    print(GetNetworkData())
