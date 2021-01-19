@@ -8,7 +8,6 @@ def GetNetworkData():
     network_names = []
     passwords = []
     for file_name in os.listdir("WiFi Network Data"):
-        print(file_name)
         if file_name == '.DS_Store':
             continue
         try:
