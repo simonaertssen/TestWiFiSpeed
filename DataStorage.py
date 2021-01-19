@@ -22,8 +22,8 @@ def ExecuteDataBaseCommands(commands):
         commands = [commands]
     try:
         for command in commands:
-            print("Executing:", command)
             connection.execute(command)
+        connection.commit()
     except DatabaseError as e:
         raise
     finally:
@@ -44,13 +44,11 @@ def AddResultsToDataBaseTable(table_name, results):
 def GetTableContents(table_name):
     tableRows = []
     with SafeDataBaseConnection() as connection:
-        print(connection)
         cursor = connection.cursor()
         try:
             cursor.execute(f"SELECT * FROM {table_name}")
             tableRows = cursor.fetchall()
             connection.commit()
-            print("tableRows", tableRows)
         except DatabaseError as e:
             print("Database error:", e)
     return tableRows
@@ -72,6 +70,5 @@ if __name__ == '__main__':
     AddResultsToDataBaseTable(tableName, results)
 
     contents = GetTableContents(tableName)
-    print(contents)
     for row in contents:
         print(row)
