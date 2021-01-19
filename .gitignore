@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Don't upload password file:
+password.txt
+
+# Mac functionality:
+.DS_Store
