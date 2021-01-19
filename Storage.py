@@ -78,6 +78,7 @@ def TestDataBaseConnection():
     else:
         print('Test succeeded...')
 
+
 if __name__ == '__main__':
     print('Testing database connection..')
     TestDataBaseConnection()
