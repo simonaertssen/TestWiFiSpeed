@@ -2,6 +2,7 @@ import os
 import time
 import subprocess
 
+
 def GetNetworkData():
     directory = "WiFi Network Data"
     network_names = []

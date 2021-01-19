@@ -1,5 +1,6 @@
 from sqlite3 import connect, DatabaseError
 
+
 DATABASE_NAME = 'SpeedTestResults.db'
 
 def SafeDataBaseConnection():

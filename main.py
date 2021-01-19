@@ -2,6 +2,7 @@ import time
 import schedule
 from speedtest import Speedtest
 
+
 def PerformSpeedtest():
     s = Speedtest()
     s.get_servers()
