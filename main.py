@@ -10,12 +10,16 @@ def PerformSpeedtest():
     s.download()
     s.upload()
     return s.results.timestamp,
+           s.results.server.host,
+           s.results.server.id,
            s.results.download,
            s.results.upload,
            s.results.ping
 
-def TestSchedule():
-    print("Testing Schedule")
+def RunTest():
+    for ssid, passwrd in GetNetworkData():
+        
+
 
 if __name__ == '__main__':
     PerformSpeedtest()

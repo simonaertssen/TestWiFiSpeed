@@ -10,16 +10,26 @@ def GetNetworkData():
     for file_name in os.listdir("WiFi Network Data"):
         if file_name == '.DS_Store':
             continue
-        file_to_open = os.path.join(directory, file_name)
-        with open(file_to_open, 'r') as filereader:
-            network_names.append(filereader.readline().strip())
-            passwords.append(filereader.readline().strip())
-    return network_names, passwords
+        try:
+            file_to_open = os.path.join(directory, file_name)
+            with open(file_to_open, 'r') as filereader:
+                network_names.append(filereader.readline().strip())
+                passwords.append(filereader.readline().strip())
+        except Error as e:
+            print(f"Error opening {file_name}:", e)
+        finally:
+            return network_names, passwords
 
 def GetActiveNetworkName():
-    subprocess_result = subprocess.Popen("/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'",shell=True,stdout=subprocess.PIPE)
-    subprocess_output = subprocess_result.communicate()[0],subprocess_result.returncode
-    return subprocess_output[0].decode('utf-8')
+    active_network_name = ""
+    try:
+        subprocess_result = subprocess.Popen("/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | awk '/ SSID:/ {print $2}'",shell=True,stdout=subprocess.PIPE)
+        subprocess_output = subprocess_result.communicate()[0],subprocess_result.returncode
+        active_network_name = subprocess_output[0].decode('utf-8')
+    except Error as e:
+        print("Could not get current network name:", e)
+    finally:
+        return active_network_name
 
 def ConnectTo(ssid, passphrase):
     command_on = "networksetup -setairportpower en0 on"
