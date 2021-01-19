@@ -13,8 +13,8 @@ def GetNetworkData():
         try:
             file_to_open = os.path.join(directory, file_name)
             with open(file_to_open, 'r') as filereader:
-                network_names.append(file_name.strip())
-                passwords.append(filereader.readline().strip())
+                network_names.append(file_name.rstrip())
+                passwords.append(filereader.readline().rstrip())
         except Error as e:
             print(f"Error opening {file_name}:", e)
     return network_names, passwords
