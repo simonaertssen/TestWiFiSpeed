@@ -28,7 +28,7 @@ def GetActiveNetworkName():
     except Error as e:
         print("Could not get current network name:", e)
     finally:
-        return active_network_name
+        return active_network_name.rstrip("\n")
 
 def ConnectTo(ssid, passphrase):
     command_on = "networksetup -setairportpower en0 on"
