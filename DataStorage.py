@@ -22,6 +22,7 @@ def ExecuteDataBaseCommands(commands):
         commands = [commands]
     try:
         for command in commands:
+            print(command)
             connection.execute(command)
         connection.commit()
     except DatabaseError as e:
@@ -30,15 +31,28 @@ def ExecuteDataBaseCommands(commands):
         DisconnectDataBase(connection)
 
 def CreateTableCommand(table_name):
-    return f"CREATE TABLE IF NOT EXISTS {table_name} (TIMESTAMP TEXT NOT NULL, DOWNLOADSPEED REAL, UPLOADSPEED REAL, LATENCY REAL);"
+    return (f"CREATE TABLE IF NOT EXISTS {table_name} ("
+             "TIMESTAMP TEXT, "
+             "WIFINAME TEXT, "
+             "HOSTNAME TEXT, "
+             "HOSTID INT, "
+             "DOWNLOADSPEED REAL, "
+             "UPLOADSPEED REAL, "
+             "LATENCY REAL);")
 
 def AddResultsToDataBaseTable(table_name, results):
     tableCommand = CreateTableCommand(table_name)
-    TIMESTAMP = results["TIMESTAMP"]
-    DOWNLOADSPEED = results["DOWNLOADSPEED"]
-    UPLOADSPEED = results["UPLOADSPEED"]
-    LATENCY = results["LATENCY"]
-    addCommand = f"INSERT INTO {table_name} (TIMESTAMP,DOWNLOADSPEED,UPLOADSPEED,LATENCY) VALUES ({TIMESTAMP},{DOWNLOADSPEED},{UPLOADSPEED},{LATENCY});"
+    addCommand = (f"INSERT INTO {table_name} ("
+                   "TIMESTAMP,WIFINAME,HOSTNAME,HOSTID,"
+                   "DOWNLOADSPEED,UPLOADSPEED,LATENCY) VALUES "
+                  f"{results['TIMESTAMP']} "
+                  f"{results['WIFINAME']} "
+                  f"{results['HOSTNAME']} "
+                  f"{results['HOSTID']} "
+                  f"{results['DOWNLOADSPEED']} "
+                  f"{results['UPLOADSPEED']} "
+                  f"{results['LATENCY']}"
+                   ");")
     ExecuteDataBaseCommands([tableCommand, addCommand])
 
 def GetTableContents(table_name):
@@ -69,7 +83,14 @@ if __name__ == '__main__':
     TestDataBaseConnection()
 
     tableName = "TestTable"
-    results = {"TIMESTAMP": "0002", "DOWNLOADSPEED": 3.14, "UPLOADSPEED": 1.61, "LATENCY": 12.0}
+    results = {}
+    results["TIMESTAMP"] = "Today"
+    results["WIFINAME"] = "HomeWiFi"
+    results["HOSTNAME"] = "HomeServer"
+    results["HOSTID"] = 0
+    results["DOWNLOADSPEED"] = 3.14
+    results["UPLOADSPEED"] = 1.61
+    results["LATENCY"] = 12.5
     AddResultsToDataBaseTable(tableName, results)
 
     contents = GetTableContents(tableName)
