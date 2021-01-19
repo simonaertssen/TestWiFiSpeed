@@ -8,7 +8,10 @@ def PerformSpeedtest():
     s.get_best_server()
     s.download()
     s.upload()
-    return s.results.timestamp, s.results.download, s.results.upload, s.results.ping
+    return s.results.timestamp,
+           s.results.download,
+           s.results.upload,
+           s.results.ping
 
 def TestSchedule():
     print("Testing Schedule")

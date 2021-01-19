@@ -22,7 +22,6 @@ def ExecuteDataBaseCommands(commands):
         commands = [commands]
     try:
         for command in commands:
-            print(command)
             connection.execute(command)
         connection.commit()
     except DatabaseError as e:
@@ -43,14 +42,14 @@ def CreateTableCommand(table_name):
 def AddResultsToDataBaseTable(table_name, results):
     tableCommand = CreateTableCommand(table_name)
     addCommand = (f"INSERT INTO {table_name} ("
-                   "TIMESTAMP,WIFINAME,HOSTNAME,HOSTID,"
-                   "DOWNLOADSPEED,UPLOADSPEED,LATENCY) VALUES "
-                  f"{results['TIMESTAMP']} "
-                  f"{results['WIFINAME']} "
-                  f"{results['HOSTNAME']} "
-                  f"{results['HOSTID']} "
-                  f"{results['DOWNLOADSPEED']} "
-                  f"{results['UPLOADSPEED']} "
+                   "TIMESTAMP, WIFINAME, HOSTNAME, HOSTID,"
+                   "DOWNLOADSPEED, UPLOADSPEED, LATENCY) VALUES ("
+                  f"'{results['TIMESTAMP']}', "
+                  f"'{results['WIFINAME']}', "
+                  f"'{results['HOSTNAME']}', "
+                  f"{results['HOSTID']}, "
+                  f"{results['DOWNLOADSPEED']}, "
+                  f"{results['UPLOADSPEED']}, "
                   f"{results['LATENCY']}"
                    ");")
     ExecuteDataBaseCommands([tableCommand, addCommand])
@@ -80,9 +79,6 @@ def TestDataBaseConnection():
 
 
 if __name__ == '__main__':
-    print('Testing database connection..')
-    TestDataBaseConnection()
-
     tableName = "TestTable"
     results = {}
     results["TIMESTAMP"] = "Today"
