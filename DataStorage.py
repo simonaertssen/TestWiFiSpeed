@@ -53,6 +53,9 @@ def GetTableContents(table_name):
             print("Database error:", e)
     return tableRows
 
+def DropTable(table_name):
+    ExecuteDataBaseCommands(f"DROP TABLE {table_name}")
+
 def TestDataBaseConnection():
     try:
         DisconnectDataBase(SafeDataBaseConnection())
@@ -66,9 +69,11 @@ if __name__ == '__main__':
     TestDataBaseConnection()
 
     tableName = "TestTable"
-    results = {"TIMESTAMP": "0001", "DOWNLOADSPEED": 3.14, "UPLOADSPEED": 1.61, "LATENCY": 12.0}
+    results = {"TIMESTAMP": "0002", "DOWNLOADSPEED": 3.14, "UPLOADSPEED": 1.61, "LATENCY": 12.0}
     AddResultsToDataBaseTable(tableName, results)
 
     contents = GetTableContents(tableName)
     for row in contents:
         print(row)
+
+    DropTable("TestTable")
